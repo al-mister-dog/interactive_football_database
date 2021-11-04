@@ -1,0 +1,4 @@
+GET /v3/standings?season=2020&league=39 HTTP/1.1
+X-Rapidapi-Host: api-football-v1.p.rapidapi.com
+X-Rapidapi-Key: 7d4d925dd6msh22ed220f3c2fd80p1af118jsn28c23cdafb0c
+Host: api-football-v1.p.rapidapi.com

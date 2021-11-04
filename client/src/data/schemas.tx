@@ -1,0 +1,90 @@
+SCHEMAS
+
+1 USERS
+
+CREATE TABLE users (
+  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  username VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  active BOOLEAN DEFAULT 0,
+  activationtoken VARCHAR(255)
+  )
+
+//SIGNUP
+INSERT INTO users (username, email, password, activationtoken)
+VALUES ('alex', 'alex@gmail.com', 'abc123', '12345')
+
+//ACTIVATION
+
+//LOGIN
+
+//TOKEN
+CREATE TABLE tokens (
+  token VARCHAR(255),
+  user_id VARCHAR(255),
+  last_used_at DATETIME
+)
+
+2 USER_TABLES
+id
+url
+title
+description
+user_id
+
+3 USER_PROFILES
+id INT NOT NULL PRIMARY KEY AUTO_INCREMENT
+interests VARCHAR(255)
+avatar VARCHAR(255) (upload to AWS)
+
+4 FAVORITE_TEAMS
+team_name (from teams)
+team_id (from teams)
+team_image_url (from teams)
+user_id
+
+5 FOLLOWS
+id 
+followed (your_user_id)
+follower (someone_elses_id)
+
+CREATE TABLE follows
+(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+followed INT NOT NULL,
+follower INT NOT NULL)
+6 BOOKMARKS
+id
+user_table_id
+book_marker_id
+
+CREATE TABLE bookmarks
+( id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+user_table_id INT NOT NULL,
+book_marker_id INT NOT NULL 
+)
+user_A bookmarks user_B's TABLE
+insert into USER_TABLES  (user_table_id, book_marker_id)
+
+to see your bookmarks
+select * from bookmarks where book_marker_id = user_id
+
+to unbookmark
+delete from bookmarks where id = bookmark.id
+
+count a table's bookmarks
+select * from bookmarks where user_table_id = USER_TABLES.id
+
+check if a table is book_marked by user
+select * from bookmarks where user_table_id = USER_TABLES.id and book_marker_id = user.id
+
+
+get user profiles 
+fetch USER by user_id
+fetch USER_PROFILES by user_id
+fetch FAVORITE_TEAMS by user_id
+fetch USER_TABLES by user_id
+
+
+
+
