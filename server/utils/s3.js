@@ -2,10 +2,10 @@ require('dotenv').config()
 const fs = require('fs')
 const S3 = require('aws-sdk/clients/s3')
 
-const bucketName = 'footybase-images'
-const region = 'us-east-1'
-const accessKeyId = 'AKIATO336OPPNSI4I2PY'
-const secretAccessKey = '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'
+const bucketName = process.env.AWS_BUCKET_NAME
+const region = process.env.AWS_BUCKET_REGION
+const accessKeyId = process.env.AWS_ACCESS_KEY
+const secretAccessKey = process.env.AWS_SECRET_KEY
 
 const s3 = new S3({
   region,

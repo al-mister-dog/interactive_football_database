@@ -35,11 +35,11 @@ function makeApiCall() {
   leagueIds.forEach((leagueId) => {
     const options = {
       method: "GET",
-      url: 'https://api-football-v1.p.rapidapi.com/v3/standings',
+      url: process.env.API_URL,
       qs: { season: "2021", league: `${leagueId.id}` },
       headers: {
-        "x-rapidapi-host": 'api-football-v1.p.rapidapi.com',
-        "x-rapidapi-key": '7d4d925dd6msh22ed220f3c2fd80p1af118jsn28c23cdafb0c',
+        "x-rapidapi-host": process.env.API_HOST,
+        "x-rapidapi-key": process.env.API_KEY,
         useQueryString: true,
       },
     };

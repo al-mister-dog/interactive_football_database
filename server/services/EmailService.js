@@ -1,4 +1,4 @@
-const db = require("../utils/database");
+require('dotenv').config()
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
 
@@ -6,7 +6,7 @@ const transporter = nodemailer.createTransport(
   sendgridTransport({
     auth: {
       api_key:
-        "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",
+       process.env.SENDGRID_KEY,
     },
   })
 );
