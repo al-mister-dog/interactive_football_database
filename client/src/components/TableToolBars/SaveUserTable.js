@@ -1,6 +1,3 @@
-//TODOS
-//add description field
-//sort out onClose
 import * as React from "react";
 import { useState } from "react";
 import { useGlobalContext } from "../../context";

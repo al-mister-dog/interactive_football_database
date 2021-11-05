@@ -33,7 +33,7 @@ exports.getFollowers = (req, res) => {
     res.send(result);
   });
 };
-//COULD REVERSE ORDER TO GET FOLLOWERS, IN A LIST WITH LINKS...
+
 exports.getUserFollowers = (req, res) => {
   const id = req.query.id;
   const sql = `SELECT users.username, path, followee_id FROM users JOIN follows ON follows.followee_id = users.id JOIN user_images ON follows.followee_id = user_images.user_id WHERE follower_id = ${id}`;

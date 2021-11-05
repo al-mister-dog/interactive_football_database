@@ -1,14 +1,3 @@
-//TODOS
-//CREATE HOMEPAGE
-
-//CSS media queries on nav grrrr
-
-//BUGS
-//SEARCH BAR UI NEEDS IMPROVING
-
-//BUILD
-//compress images
-
 import { ThemeProvider } from "@material-ui/styles";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 

@@ -18,7 +18,7 @@ exports.getStats = (req, res, next) => {
     mostDefenders: `SELECT teamName AS team, COUNT(position) AS defenders FROM players JOIN teams ON players.teamId = teams.id  WHERE position = 'DF' GROUP BY team ORDER BY defenders DESC`,
     mostForwards: `SELECT teamName AS team, COUNT(position) AS forwards FROM players JOIN teams ON players.teamId = teams.id WHERE position = 'FW' GROUP BY team ORDER BY forwards DESC`
   }
-  //choose above query object depending on what database you are using
+  
   const sql = queries[req.query.stat]
   db.query(sql, (err, result) => { 
     if (err) console.log(err)

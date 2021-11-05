@@ -11,9 +11,7 @@ const useStyles = makeStyles((theme) => ({
       alignSelf: "flex-end",
       display: "flex",
       flexDirection: "column",
-      // alignItems: "baseline",
       padding: 0,
-      
     },
   },
   userProfile: {
@@ -66,7 +64,6 @@ export default function FollowButton({
     }
     checkIfFollowing();
   }, [followers, user.id]);
-  //keep an eye on user.id dependency
   return (
     <>
       <Typography variant="body1" className={classes.avatarHeader}>

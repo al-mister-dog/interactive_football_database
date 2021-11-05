@@ -1,6 +1,3 @@
-//TODOS
-//sort signout close modal
-
 import * as React from "react";
 import { useState } from "react";
 import { useGlobalContext } from "../../../context";

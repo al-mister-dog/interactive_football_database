@@ -19,7 +19,6 @@ import { useGlobalContext } from "../../../context";
 
 const useStyles = makeStyles((theme) => ({
   searchBar: {
-    // p: '2px 4px',
     display: "flex",
     alignItems: "center",
     width: 230,
@@ -68,10 +67,8 @@ export default function SearchBar() {
 
   const handleClickList = (e) => {
     if (node.current.contains(e.target)) {
-      // inside click
       return;
     }
-    // outside click
     setOpen(false);
   };
   const handleClickListItem = async (item) => {

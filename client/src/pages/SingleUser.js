@@ -86,7 +86,6 @@ export default function SingleUser() {
     );
     const data = response.json();
     getUserTables();
-    // getProfileUser();
   };
 
   async function getProfileUser() {

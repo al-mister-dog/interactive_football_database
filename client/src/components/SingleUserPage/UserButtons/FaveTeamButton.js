@@ -1,8 +1,3 @@
-//TODODS
-//render favourite team on modal close at least. even better on button close !!!
-//delete a team
-//go to team
-
 import { useState } from "react";
 import { Button, Menu, MenuItem, Collapse } from "@material-ui/core";
 import ExpandLess from "@material-ui/icons/ExpandLess";
@@ -136,11 +131,7 @@ export default function FaveTeamButton({ teamName, teamId, faveTeamIds, number, 
     addTeamToFavourites(teamId);
     setMenuOpen(false);
   };
-
-  // useEffect(() => {
-  //   console.log(teamNameBtn)
-  // }, [teamNameBtn])
-
+  
   return (
     <>
       <Button

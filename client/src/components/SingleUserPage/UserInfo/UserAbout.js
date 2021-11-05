@@ -87,10 +87,6 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     overflowY: "scroll",
     width: "100%",
-    // display: "flex",
-    // flexDirection: "column",
-        
-    
   },
   followerCard: {
     display: "flex",
@@ -99,7 +95,6 @@ const useStyles = makeStyles((theme) => ({
     width: "90%",
     height: "40%",
     margin: "auto",
-    // marginTop: 1,
     "&:hover": {
       background: "rgba(0, 0, 0, 0.1)",
     },

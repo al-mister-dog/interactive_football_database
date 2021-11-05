@@ -23,11 +23,6 @@ import { hasChildren } from "../../menuUtils";
 import { useGlobalContext } from "../../context";
 
 const useStyles = makeStyles((theme) => ({
-  //MOBILE VIEW??
-  //   toolbar: {
-  // display: "flex",
-  // flexDirection: "column",
-  //   },
   toolbar: {
     display: "flex",
     justifyContent: "space-between",

@@ -1,13 +1,7 @@
-//TODOS
-//organise context page
-//look for overlapping functions
-//try to separate concerns
-
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { tabs } from "./data/menuData";
 const AppContext = React.createContext();
-const host = "https://footy-app-server-test.herokuapp.com/";
 const menuTabs = tabs;
 const toolbarTypes = {
   canEdit: false,
@@ -382,7 +376,7 @@ const AppProvider = ({ children }) => {
     const tableTitle = userTable.title;
     const fromRandomFunc = true;
     await getUserPicForTable(userId);
-    await getUserTable(urlId); //should be userTableId
+    await getUserTable(urlId);
     getTableData(url);
     getUserTableTitle(userId, tableTitle, username, fromRandomFunc);
   }

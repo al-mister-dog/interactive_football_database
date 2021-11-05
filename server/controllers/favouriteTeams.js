@@ -19,5 +19,3 @@ exports.saveFavouriteTeams = (req, res) => {
     return res.send({msg: 'success'})
   })
 }
-// const sql = `INSERT INTO favourite_teams (team_id, user_id, num) VALUES (${teamId}, ${userId}, ${num}) ON DUPLICATE KEY UPDATE team_id = "${teamId}"`
-// `INSERT INTO favourite_teams (team_id, user_id, num) VALUES (1, 3, 0) ON DUPLICATE KEY UPDATE team_id = 1`

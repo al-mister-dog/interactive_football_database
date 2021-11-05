@@ -1,90 +1,107 @@
-SCHEMAS
-
-1 USERS
-
-CREATE TABLE users (
-  id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  username VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  password VARCHAR(255) NOT NULL,
-  active BOOLEAN DEFAULT 0,
-  activationtoken VARCHAR(255)
-  )
-
-//SIGNUP
-INSERT INTO users (username, email, password, activationtoken)
-VALUES ('alex', 'alex@gmail.com', 'abc123', '12345')
-
-//ACTIVATION
-
-//LOGIN
-
-//TOKEN
-CREATE TABLE tokens (
-  token VARCHAR(255),
-  user_id VARCHAR(255),
-  last_used_at DATETIME
+CREATE TABLE `players` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `Name` varchar(255) DEFAULT NULL,
+  `Nation` varchar(255) DEFAULT NULL,
+  `Position` varchar(255) DEFAULT NULL,
+  `Team` varchar(255) DEFAULT NULL,
+  `team_id` int DEFAULT NULL,
+  `Age` int DEFAULT NULL,
+  `Born` int DEFAULT NULL,
+  `Matches` int DEFAULT NULL,
+  `Starts` int DEFAULT NULL,
+  `Minutes` int DEFAULT NULL,
+  `90mins` int DEFAULT NULL,
+  `Goals` int DEFAULT NULL,
+  `Assists` int DEFAULT NULL,
+  `NonPenGoals` int DEFAULT NULL,
+  `PenGoals` int DEFAULT NULL,
+  `PenAttempts` int DEFAULT NULL,
+  `Yellows` int DEFAULT NULL,
+  `Reds` int DEFAULT NULL,
+  `GlsPer90` varchar(255) DEFAULT NULL,
+  `AstPer90` varchar(255) DEFAULT NULL,
+  `GlsAstPer90` varchar(255) DEFAULT NULL,
+  `NonPenGoalsPer90` varchar(255) DEFAULT NULL,
+  `NonPenGlsAstPer90` varchar(255) DEFAULT NULL,
+  `xG` varchar(255) DEFAULT NULL,
+  `NonPenxG` varchar(255) DEFAULT NULL,
+  `xA` varchar(255) DEFAULT NULL,
+  `npxGxA` varchar(255) DEFAULT NULL,
+  `xGPer90` varchar(255) DEFAULT NULL,
+  `xAPer90` varchar(255) DEFAULT NULL,
+  `xGxAPer90` varchar(255) DEFAULT NULL,
+  `npxGPer90` varchar(255) DEFAULT NULL,
+  `npxGxAPer90` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 )
 
-2 USER_TABLES
-id
-url
-title
-description
-user_id
-
-3 USER_PROFILES
-id INT NOT NULL PRIMARY KEY AUTO_INCREMENT
-interests VARCHAR(255)
-avatar VARCHAR(255) (upload to AWS)
-
-4 FAVORITE_TEAMS
-team_name (from teams)
-team_id (from teams)
-team_image_url (from teams)
-user_id
-
-5 FOLLOWS
-id 
-followed (your_user_id)
-follower (someone_elses_id)
-
-CREATE TABLE follows
-(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-followed INT NOT NULL,
-follower INT NOT NULL)
-6 BOOKMARKS
-id
-user_table_id
-book_marker_id
-
-CREATE TABLE bookmarks
-( id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-user_table_id INT NOT NULL,
-book_marker_id INT NOT NULL 
+CREATE TABLE `teams` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `team_name` varchar(255) DEFAULT NULL,
+  `image_url` varchar(255) DEFAULT NULL,
+  `league` varchar(255) DEFAULT NULL,
+  `league_id` int DEFAULT NULL,
+  `manager` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `stadium` varchar(255) DEFAULT NULL,
+  `capacity` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
 )
-user_A bookmarks user_B's TABLE
-insert into USER_TABLES  (user_table_id, book_marker_id)
 
-to see your bookmarks
-select * from bookmarks where book_marker_id = user_id
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `active` tinyint(1) DEFAULT '0',
+  `activationtoken` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
 
-to unbookmark
-delete from bookmarks where id = bookmark.id
+CREATE TABLE `tokens` (
+  `token` varchar(255) DEFAULT NULL,
+  `user_id` varchar(255) DEFAULT NULL,
+  `last_used_at` datetime DEFAULT NULL
+)
 
-count a table's bookmarks
-select * from bookmarks where user_table_id = USER_TABLES.id
+CREATE TABLE `user_images` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `path` varchar(255) DEFAULT NULL,
+  `user_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`)
+)
 
-check if a table is book_marked by user
-select * from bookmarks where user_table_id = USER_TABLES.id and book_marker_id = user.id
+CREATE TABLE `user_tables` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `url` varchar(1000) DEFAULT NULL,
+  `user_id` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
 
+CREATE TABLE `follows` (
+  `follower_id` int NOT NULL,
+  `followee_id` int NOT NULL
+) 
 
-get user profiles 
-fetch USER by user_id
-fetch USER_PROFILES by user_id
-fetch FAVORITE_TEAMS by user_id
-fetch USER_TABLES by user_id
+CREATE TABLE `favourite_teams` (
+  `team_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `num` varchar(255) DEFAULT NULL,
+  UNIQUE KEY `num` (`num`)
+)
 
-
-
+CREATE TABLE `bookmarks` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `table_id` int DEFAULT NULL,
+  `bookmarkee_id` int NOT NULL,
+  `bookmarker_id` int NOT NULL,
+  `bookmark_key` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `bookmark_key` (`bookmark_key`),
+  KEY `table_id` (`table_id`),
+  CONSTRAINT `bookmarks_ibfk_1` FOREIGN KEY (`table_id`) REFERENCES `user_tables` (`id`) ON DELETE CASCADE
+)
 

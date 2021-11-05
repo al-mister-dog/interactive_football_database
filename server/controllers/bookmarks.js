@@ -26,7 +26,7 @@ exports.getBookmarks = (req, res) => {
     res.send(result);
   });
 };
-//could be one query ??
+
 exports.getUserBookmarks = (req, res) => {
   const bookmarkerId = req.query.id;
   const sql = `SELECT user_tables.id AS user_table_id, user_tables.user_id, bookmarks.id AS bookmarks_id, users.username, user_tables.title, user_tables.description, url FROM user_tables JOIN bookmarks ON user_tables.id = bookmarks.table_id JOIN users ON user_tables.user_id = users.id WHERE bookmarker_id = ${bookmarkerId}`

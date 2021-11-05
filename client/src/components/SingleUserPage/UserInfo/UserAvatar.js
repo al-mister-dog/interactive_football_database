@@ -29,9 +29,7 @@ const useStyles = makeStyles((theme) => ({
       alignSelf: "flex-end",
       display: "flex",
       flexDirection: "column",
-      // alignItems: "baseline",
       padding: 0,
-      
     },
   },
   avatarSpace: {
