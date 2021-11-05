@@ -106,7 +106,7 @@ export default function FaveTeamButton({ teamName, teamId, faveTeamIds, number, 
       }),
     };
     await fetch(
-      "https://footy-app-server-test.herokuapp.com/api/social/favourite-teams",
+      "/api/social/favourite-teams",
       options
     );
     getFavouriteTeams(id)

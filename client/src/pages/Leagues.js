@@ -228,7 +228,7 @@ export default function DenseTable() {
     };
     console.log(leagueIds[id]);
     const response = await fetch(
-      `https://footy-app-server-test.herokuapp.com/api/leagues/${leagueIds[id]}`
+      `/api/leagues/${leagueIds[id]}`
     );
     const data = await response.json();
     console.log(data);

@@ -96,7 +96,7 @@ export default function SearchBar() {
     } else {
       setOpen(true);
       const response = await fetch(
-        `https://footy-app-server-test.herokuapp.com/api/search/${menuItem}/?searchValue=${e.target.value}`
+        `/api/search/${menuItem}/?searchValue=${e.target.value}`
       );
       const data = await response.json();
       if (data.length === 0) {

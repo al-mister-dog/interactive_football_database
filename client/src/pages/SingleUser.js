@@ -81,7 +81,7 @@ export default function SingleUser() {
       }),
     };
     const response = await fetch(
-      `https://footy-app-server-test.herokuapp.com/api/users/delete-table`,
+      `/api/users/delete-table`,
       options
     );
     const data = response.json();
@@ -91,7 +91,7 @@ export default function SingleUser() {
   async function getProfileUser() {
     try {
       const response = await fetch(
-        `https://footy-app-server-test.herokuapp.com/api/users/get-single-user/?id=${id}`
+        `/api/users/get-single-user/?id=${id}`
       );
       const data = await response.json();
       setProfileUser(data[0]);
@@ -102,13 +102,12 @@ export default function SingleUser() {
 
   const getProfilePic = async (id) => {
     const result = await fetch(
-      `https://footy-app-server-test.herokuapp.com/api/users/profile-pic/?id=${id}`
+      `/api/users/profile-pic/?id=${id}`
     );
     const data = await result.json();
     if (data.length > 0) {
       const path = data[0].path;
-      const host = `https://footy-app-server-test.herokuapp.com`;
-      const imageUrl = `${host}${path}`;
+      const imageUrl = `${path}`;
       setProfilePic(imageUrl);
     }
   };
@@ -116,7 +115,7 @@ export default function SingleUser() {
   async function getFollowers() {
     try {
       const response = await fetch(
-        `https://footy-app-server-test.herokuapp.com/api/social/get-followers/?id=${id}`
+        `/api/social/get-followers/?id=${id}`
       );
       const data = await response.json();
       setFollowers(data);
@@ -127,7 +126,7 @@ export default function SingleUser() {
 
   const getFollowingList = async () => {
     const result = await fetch(
-      `https://footy-app-server-test.herokuapp.com/api/social/get-user-followers/?id=${id}`
+      `/api/social/get-user-followers/?id=${id}`
     );
     const data = await result.json();
     setFollowingList(data);
@@ -135,7 +134,7 @@ export default function SingleUser() {
 
   const getFavouriteTeams = async (id) => {
     const result = await fetch(
-      `https://footy-app-server-test.herokuapp.com/api/social/favourite-teams/?id=${id}`
+      `/api/social/favourite-teams/?id=${id}`
     );
     const data = await result.json();
     setFavouriteTeams(data);
@@ -143,7 +142,7 @@ export default function SingleUser() {
 
   async function getUserTables() {
     const response = await fetch(
-      `https://footy-app-server-test.herokuapp.com/api/users/get-user-tables/?userId=${id}`
+      `/api/users/get-user-tables/?userId=${id}`
     );
     const data = await response.json();
     console.log("getUserTables", data)
@@ -152,7 +151,7 @@ export default function SingleUser() {
 
   const getBookmarkedUserTables = async () => {
     const result = await fetch(
-      `https://footy-app-server-test.herokuapp.com/api/social/get-user-bookmarks/?id=${id}`
+      `/api/social/get-user-bookmarks/?id=${id}`
     );
     const data = await result.json();
     console.log("getBookmarkedUserTables", data);
@@ -168,7 +167,7 @@ export default function SingleUser() {
       }),
     };
     const response = await fetch(
-      "https://footy-app-server-test.herokuapp.com/api/social/bookmark",
+      "/api/social/bookmark",
       options
     );
     const data = response.json();

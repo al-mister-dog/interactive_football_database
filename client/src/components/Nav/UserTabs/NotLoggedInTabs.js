@@ -219,7 +219,7 @@ export default function ModalSave() {
       }),
     };
     const response = await fetch(
-      "https://footy-app-server-test.herokuapp.com/api/auth/signup",
+      "/api/auth/signup",
       options
     );
 
@@ -272,7 +272,7 @@ export default function ModalSave() {
       }),
     };
     const response = await fetch(
-      "https://footy-app-server-test.herokuapp.com/api/auth/login",
+      "/api/auth/login",
       options
     );
     const data = await response.json();

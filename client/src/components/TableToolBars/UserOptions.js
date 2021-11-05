@@ -16,7 +16,7 @@ export default function UserOptions() {
 
   const checkBookmark = async () => {
     const response = await fetch(
-      `https://footy-app-server-test.herokuapp.com/api/social/check-bookmark/?tableId=${tableId}&bookmarkerId=${bookmarkerId}`
+      `/api/social/check-bookmark/?tableId=${tableId}&bookmarkerId=${bookmarkerId}`
     );
     const data = await response.json();
     data.length > 0 ? setIsBookmarked(true) : setIsBookmarked(false);
@@ -32,7 +32,7 @@ export default function UserOptions() {
       }),
     };
     const response = await fetch(
-      "https://footy-app-server-test.herokuapp.com/api/social/bookmark",
+      "/api/social/bookmark",
       options
     );
     const data = response.json();
@@ -51,7 +51,7 @@ export default function UserOptions() {
       }),
     };
     const response = await fetch(
-      "https://footy-app-server-test.herokuapp.com/api/social/unbookmark",
+      "/api/social/unbookmark",
       options
     );
     const data = response.json();

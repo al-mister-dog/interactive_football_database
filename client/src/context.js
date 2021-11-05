@@ -99,7 +99,7 @@ const AppProvider = ({ children }) => {
 
   const getTeamLogo = async (id) => {
     const response = await fetch(
-      `https://footy-app-server-test.herokuapp.com/api/table/team-logo/?id=${id}`
+      `/api/table/team-logo/?id=${id}`
     );
     const data = await response.json();
     const teamLogo = data[0].imageUrl;
@@ -136,7 +136,7 @@ const AppProvider = ({ children }) => {
 
   const getTableData = async (string) => {
     const response = await fetch(
-      `https://footy-app-server-test.herokuapp.com${string}`
+      `${string}`
     );
     const data = await response.json();
     setTable(data);
@@ -228,7 +228,7 @@ const AppProvider = ({ children }) => {
   async function addTablesToStatMenu(id) {
     console.log(id);
     const response = await fetch(
-      `https://footy-app-server-test.herokuapp.com/api/users/get-user-tables/?userId=${id}`
+      `/api/users/get-user-tables/?userId=${id}`
     );
     const data = await response.json();
     if (data.length === 0) {
@@ -240,7 +240,7 @@ const AppProvider = ({ children }) => {
 
   async function getUserTable(id) {
     const response = await fetch(
-      `https://footy-app-server-test.herokuapp.com/api/users/user-table-info/?id=${id}`
+      `/api/users/user-table-info/?id=${id}`
     );
     const data = await response.json();
     setUserTable(data[0]);
@@ -285,7 +285,7 @@ const AppProvider = ({ children }) => {
 
   const getUsers = async () => {
     const response = await fetch(
-      "https://footy-app-server-test.herokuapp.com/api/users/get-users"
+      "/api/users/get-users"
     );
     const data = await response.json();
     const userData = data.map((user) => {
@@ -300,7 +300,7 @@ const AppProvider = ({ children }) => {
   const checkToken = async () => {
     const tokenString = localStorage.getItem("token");
     const response = await fetch(
-      `https://footy-app-server-test.herokuapp.com/api/auth/get-token/?token=${tokenString}`
+      `/api/auth/get-token/?token=${tokenString}`
     );
     const data = await response.json();
     const token = data;
@@ -313,7 +313,7 @@ const AppProvider = ({ children }) => {
   const getUserByToken = async (token) => {
     const id = token.id;
     const response = await fetch(
-      `https://footy-app-server-test.herokuapp.com/api/users/get-single-user/?id=${id}`
+      `/api/users/get-single-user/?id=${id}`
     );
     const data = await response.json();
     const existingUser = data[0];
@@ -327,13 +327,12 @@ const AppProvider = ({ children }) => {
 
   const getProfilePic = async (id) => {
     const result = await fetch(
-      `https://footy-app-server-test.herokuapp.com/api/users/profile-pic/?id=${id}`
+      `/api/users/profile-pic/?id=${id}`
     );
     const data = await result.json();
     if (data.length > 0) {
       const path = data[0].path;
-      const host = `https://footy-app-server-test.herokuapp.com`;
-      const imageUrl = `${host}${path}`;
+      const imageUrl = `${path}`;
       console.log(imageUrl);
       setProfilePic(imageUrl);
     }
@@ -341,20 +340,19 @@ const AppProvider = ({ children }) => {
 
   const getUserPicForTable = async (id) => {
     const result = await fetch(
-      `https://footy-app-server-test.herokuapp.com/api/users/profile-pic/?id=${id}`
+      `/api/users/profile-pic/?id=${id}`
     );
     const data = await result.json();
     if (data.length > 0) {
       const path = data[0].path;
-      const host = `https://footy-app-server-test.herokuapp.com`;
-      const imageUrl = `${host}${path}`;
+      const imageUrl = `${path}`;
       setToolbarImage(imageUrl);
     }
   };
 
   const getFavouriteTeams = async (id) => {
     const result = await fetch(
-      `https://footy-app-server-test.herokuapp.com/api/social/favourite-teams/?id=${id}`
+      `/api/social/favourite-teams/?id=${id}`
     );
     const data = await result.json();
     setFavouriteTeams(data);
@@ -362,7 +360,7 @@ const AppProvider = ({ children }) => {
 
   async function getRandomUserTable() {
     const randomUrlResponse = await fetch(
-      `https://footy-app-server-test.herokuapp.com/api/table/get-random-url`
+      `/api/table/get-random-url`
     );
     const randomUrldata = await randomUrlResponse.json();
     if (randomUrldata.length === 0) {

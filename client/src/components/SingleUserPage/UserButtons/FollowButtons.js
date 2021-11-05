@@ -30,7 +30,7 @@ export default function FollowButton({
   const [following, setFollowing] = useState(true);
 
   const onFollow = async () => {
-    await fetch(`https://footy-app-server-test.herokuapp.com/api/social/follow`, {
+    await fetch(`/api/social/follow`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export default function FollowButton({
   };
 
   const onUnfollow = async () => {
-    await fetch(`https://footy-app-server-test.herokuapp.com/api/social/unfollow`, {
+    await fetch(`/api/social/unfollow`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

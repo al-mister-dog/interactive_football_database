@@ -177,8 +177,7 @@ export default function UserAbout({
         <div className={classes.avatars}>
           {followingList
             .map((followee) => {
-              const host = `https://footy-app-server-test.herokuapp.com`;
-              const imageUrl = `${host}${followee.path}`;
+              const imageUrl = `${followee.path}`;
               return (
                 <Link
                   key={followee.followee_id}
@@ -207,8 +206,7 @@ export default function UserAbout({
           <Box className={classes.modal}>
             <div className={classes.scroll}>
               {followingList.map((followee) => {
-                const host = `https://footy-app-server-test.herokuapp.com`;
-                const imageUrl = `${host}${followee.path}`;
+                const imageUrl = `${followee.path}`;
                 return (
                   <Link
                     className={classes.followerLink}

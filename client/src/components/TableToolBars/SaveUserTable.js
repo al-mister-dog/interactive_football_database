@@ -106,7 +106,7 @@ export default function ModalSave() {
       }),
     };
     const response = await fetch(
-      "https://footy-app-server-test.herokuapp.com/api/users/save-user-table",
+      "/api/users/save-user-table",
       options
     );
     const data = await response.json();

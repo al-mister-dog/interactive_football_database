@@ -46,7 +46,7 @@ export default function LoggedInTab() {
       }),
     };
     const response = await fetch(
-      "https://footy-app-server-test.herokuapp.com/api/auth/token/remove-token",
+      "/api/auth/token/remove-token",
       options
     );
     const data = response.json();

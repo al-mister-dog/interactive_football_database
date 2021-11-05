@@ -6,7 +6,7 @@ async function postImage({ image, userId }) {
   const formData = new FormData();
   formData.append("image", image);
   formData.append("userId", userId);
-  const result = await axios.post("https://footy-app-server-test.herokuapp.com/api/images/upload", formData, {
+  const result = await axios.post("/api/images/upload", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return result.data;
