@@ -18,22 +18,22 @@ Future features include utilising more advanced methods of making table queries.
 
 ## Libraries, Dependencies and Hosting
 Footybase uses the following libraries, dependencies and platforms:
-React
-React-Router-Dom
-Context-Api
-Material-UI
-Node-JS
-Express
-MySql
-ClearDB
-AWS (Amazon Web Services)
-RapidAPI
-NodeMailer
-NodeMailer-SendGrid
-Bcrypt
-Node-Crypto
-Node-FileSystem
-Multer
-Git
-Heroku
+React,
+React-Router-Dom,
+Context-Api,
+Material-UI,
+Node-JS,
+Express,
+MySql,
+ClearDB,
+AWS (Amazon Web Services),
+RapidAPI,
+NodeMailer,
+NodeMailer-SendGrid,
+Bcrypt,
+Node-Crypto,
+Node-File-System,
+Multer,
+Git,
+Heroku,
 Netlify
