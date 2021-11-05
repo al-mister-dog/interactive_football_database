@@ -15,3 +15,25 @@ To keep the league tables up to date, the server make one scheduled call to rapi
 Images are stored in AWS' S3 bucket.
 
 Future features include utilising more advanced methods of making table queries. I hope to be able to make use of SQL's GROUP BY and other aggregated functions, and making them accesible to client-side users.
+
+## Libraries, Dependencies and Hosting
+Footybase uses the following libraries, dependencies and platforms:
+React
+React-Router-Dom
+Context-Api
+Material-UI
+Node-JS
+Express
+MySql
+ClearDB
+AWS (Amazon Web Services)
+RapidAPI
+NodeMailer
+NodeMailer-SendGrid
+Bcrypt
+Node-Crypto
+Node-FileSystem
+Multer
+Git
+Heroku
+Netlify
