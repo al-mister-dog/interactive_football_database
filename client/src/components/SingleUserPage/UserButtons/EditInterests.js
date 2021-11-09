@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   IconButton,
   Typography,
@@ -33,7 +33,11 @@ const useStyles = makeStyles((theme) => ({
 export default function EditInterests({ id, user, interests, getInterests }) {
   const classes = useStyles();
   const [textFieldOpen, setTextFieldOpen] = useState(false);
-  const [interestsValue, setInterestsValue] = useState("")
+  const [interestsValue, setInterestsValue] = useState("");
+  const [errorInterests, setErrorInterests] = useState(false);
+  const [errorInterestsMessage, setErrorInterestsMessage] = useState("");
+  const node = useRef();
+
   const handleTextFieldOpen = () => {
     setTextFieldOpen(true);
   };
@@ -42,6 +46,13 @@ export default function EditInterests({ id, user, interests, getInterests }) {
   };
   const handleInterestsChange = (event) => {
     setInterestsValue(event.target.value);
+    if (event.target.value.length > 5) {
+      setErrorInterests(true);
+      setErrorInterestsMessage('must be less than 255 characters')
+    } else {
+      setErrorInterests(false);
+      setErrorInterestsMessage('')
+    }
   };
   const handleInterestsKeyPress = (event) => {
     if (event.code === "Enter") {
@@ -68,14 +79,28 @@ export default function EditInterests({ id, user, interests, getInterests }) {
       options
     );
     const data = await response.json();
-    if (data.success) {
-      getInterests()
-    } else {
-      console.log('something went wrong')
-      //HANDLE ERROR
-    }
-    
+    // if (data.success) {
+    //   getInterests()
+    //   console.log('on add interest' + data)
+    // } else {
+    //   console.log('something went wrong')
+    // }
   };
+
+  const handleClickTextField = (e) => {
+    if (node.current.contains(e.target)) {
+      return;
+    }
+    setTextFieldOpen(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickTextField);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickTextField);
+    };
+  }, []);
   
   return (
     <>
@@ -92,22 +117,22 @@ export default function EditInterests({ id, user, interests, getInterests }) {
             </>
           )}
         </div>
+        <div ref={node}>
         {textFieldOpen ? (
           <FormControl variant="standard" className={classes.formControl}>
             <TextField
-              // required
-              // error={errorDescription && true}
-              // helperText={errorDescriptionMessage}
-              // id="outlined-required"
-              // label="Description"
+              required
+              error={errorInterests && true}
+              helperText={errorInterestsMessage}
+              id="outlined-required"
               value={interestsValue}
               onKeyPress={handleInterestsKeyPress}
               onChange={handleInterestsChange}
             />
             <Button
               // type="submit"
-              // color="primary"
-              // disabled={isError}
+              color="primary"
+              disabled={errorInterests}
               onClick={onAddInterests}
             >
               add interests
@@ -116,6 +141,8 @@ export default function EditInterests({ id, user, interests, getInterests }) {
         ) : (
           <Typography variant="body1">{interests}</Typography>
         )}
+        </div>
+
       </div>
     </>
   );
