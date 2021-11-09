@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import EditFavouriteTeams from "../UserButtons/EditFavouriteTeams";
+import EditInterests from "../UserButtons/EditInterests";
 import {
   Card,
   Typography,
@@ -127,6 +128,8 @@ export default function UserAbout({
   handleClickTeam,
   getFavouriteTeams,
   followingList,
+  interests,
+  getInterests,
 }) {
   const [followersModalOpen, setFollowersModalOpen] = useState(false);
   const handleFollowersModalOpen = () => {
@@ -232,7 +235,12 @@ export default function UserAbout({
       </div>
 
       <div className={classes.infoCard}>
-        <Typography variant="body1">I'm interested in...</Typography>
+        <EditInterests
+          id={id}
+          user={user}
+          interests={interests}
+          getInterests={getInterests}
+        />
       </div>
     </Card>
   );

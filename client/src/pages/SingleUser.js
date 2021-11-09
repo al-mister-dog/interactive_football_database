@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "row",
     "@media (max-width: 780px)": {
-      flexDirection: "column"
+      flexDirection: "column",
     },
   },
   avatarBox: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     boxShadow: "none",
     "@media (max-width: 780px)": {
-      flexDirection: "row"
+      flexDirection: "row",
     },
   },
   infoBox: {
@@ -47,6 +47,7 @@ export default function SingleUser() {
   const [followers, setFollowers] = useState([]);
   const [followingList, setFollowingList] = useState([]);
   const [favouriteTeams, setFavouriteTeams] = useState([]);
+  const [interests, setInterests] = useState([]);
   const [userTables, setUserTables] = useState([]);
   const [bookmarkList, setBookmarkList] = useState([]);
 
@@ -57,18 +58,24 @@ export default function SingleUser() {
     getTeamData,
     getUserTable,
     getUserPicForTable,
-    getTeamLogo
+    getTeamLogo,
   } = useGlobalContext();
-  
-  const handleMyTablesClick = async (user_table_id, user_id, title, username, url) => {
-    await getUserPicForTable(user_id)
+
+  const handleMyTablesClick = async (
+    user_table_id,
+    user_id,
+    title,
+    username,
+    url
+  ) => {
+    await getUserPicForTable(user_id);
     await getUserTable(user_table_id);
     getUserTableTitle(user_id, title, username);
     getTableData(url);
   };
 
   const handleClickTeam = (teamId, teamName) => {
-    getTeamLogo(teamId)
+    getTeamLogo(teamId);
     getTeamData(teamId, teamName);
   };
 
@@ -97,6 +104,7 @@ export default function SingleUser() {
       setProfileUser(data[0]);
     } catch (error) {
       console.log(error);
+      //HANDLE ERROR
     }
   }
 
@@ -121,6 +129,7 @@ export default function SingleUser() {
       setFollowers(data);
     } catch (error) {
       console.log(error);
+      //HANDLE ERROR
     }
   }
 
@@ -140,12 +149,23 @@ export default function SingleUser() {
     setFavouriteTeams(data);
   };
 
+  const getInterests = async () => {
+    const response = await fetch(
+      `/api/social/interests/?id=${id}`
+    );
+    const data = await response.json();
+    if (data.length > 0) {
+      setInterests(data[0].text);
+    } else {
+      setInterests("");
+    }
+  };
+
   async function getUserTables() {
     const response = await fetch(
       `/api/users/get-user-tables/?userId=${id}`
     );
     const data = await response.json();
-    console.log("getUserTables", data)
     setUserTables(data);
   }
 
@@ -154,7 +174,6 @@ export default function SingleUser() {
       `/api/social/get-user-bookmarks/?id=${id}`
     );
     const data = await result.json();
-    console.log("getBookmarkedUserTables", data);
     setBookmarkList(data);
   };
 
@@ -170,10 +189,8 @@ export default function SingleUser() {
       "/api/social/bookmark",
       options
     );
-    const data = response.json();
-    if (data.success) {
-      console.log(data)
-    }
+    // const data = response.json();
+    //HANDLE ERROR AND SUCCESS
     getBookmarkedUserTables();
   };
 
@@ -183,6 +200,7 @@ export default function SingleUser() {
     getFavouriteTeams(id);
     getFollowers();
     getFollowingList();
+    getInterests();
     getBookmarkedUserTables();
     getUserTables();
   }, [id, user]);
@@ -214,9 +232,11 @@ export default function SingleUser() {
               id={id}
               username={username}
               favouriteTeams={favouriteTeams}
+              interests={interests}
               handleClickTeam={handleClickTeam}
               getFavouriteTeams={getFavouriteTeams}
               followingList={followingList}
+              getInterests={getInterests}
             />
             <UserTables
               user={user}

@@ -122,15 +122,15 @@ export default function StickyHeadTable() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   function checkCellDisabled(val, i) {
-    console.log(tableTitle)
-    if (typeof tableTitle === 'object') {
-      return true
+    console.log(tableTitle);
+    if (typeof tableTitle === "object") {
+      return true;
     }
-    if (tableTitle.includes('club info')) {
+    if (tableTitle.includes("club info")) {
       return true;
     }
     if (fields.length === 2) {
-      return true
+      return true;
     }
     if (fields[i] === "Name") {
       return true;
@@ -306,15 +306,17 @@ export default function StickyHeadTable() {
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={tableData.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleSwitchChangePage}
-        onRowsPerPageChange={handleSwitchChangeRowsPerPage}
-      />
+      {tableData.length > 10 && (
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={tableData.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleSwitchChangePage}
+          onRowsPerPageChange={handleSwitchChangeRowsPerPage}
+        />
+      )}
     </Paper>
   );
 }
