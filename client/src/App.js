@@ -1,7 +1,5 @@
 import { ThemeProvider } from "@material-ui/styles";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-
-import { useGlobalContext } from "./context";
 import Nav from "./components/Nav/Nav";
 import theme from "./styles/Theme";
 import Table from "./pages/Table";
@@ -11,9 +9,6 @@ import Leagues from "./pages/Leagues"
 import Error from "./pages/Error";
 
 function App() {
-  const { footy } = useGlobalContext()
-
-
   return (
     <ThemeProvider theme={theme}>
       <Router>
@@ -39,9 +34,6 @@ function App() {
           </Route>
         </Switch>
       </Router>
-      <div>
-        <p>{footy}</p>
-      </div>
     </ThemeProvider>
   );
 }
