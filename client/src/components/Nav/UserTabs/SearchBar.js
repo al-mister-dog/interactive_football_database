@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+
 import {
   Paper,
   InputBase,
@@ -16,6 +17,8 @@ import SearchIcon from "@material-ui/icons/Search";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { useGlobalContext } from "../../../context";
+
+import api from '../../../api'
 
 const useStyles = makeStyles((theme) => ({
   searchBar: {
@@ -44,7 +47,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SearchBar() {
   const classes = useStyles();
-  const { user, filter, getTeamData, setTableTitle } = useGlobalContext();
+  const {
+    user,
+    filter,
+    getTeamData,
+    setTableTitle,
+    setToolbarImage,
+    setTeamId,
+  } = useGlobalContext();
   const [searchValue, setSearchValue] = useState("");
   const [anchorEl, setAnchorEl] = useState(null);
   const openMenu = Boolean(anchorEl);
@@ -67,8 +77,10 @@ export default function SearchBar() {
 
   const handleClickList = (e) => {
     if (node.current.contains(e.target)) {
+      // inside click
       return;
     }
+    // outside click
     setOpen(false);
   };
   const handleClickListItem = async (item) => {
@@ -79,11 +91,12 @@ export default function SearchBar() {
     } else if (menuItem === "players") {
       filter([{ field: "playerId", value: item.id }]);
       setTableTitle(item.name);
+      setToolbarImage("");
       setSearchValue("");
-      console.log(searchValue)
     } else if (menuItem === "teams") {
       getTeamData(item.id);
       setTableTitle(item.name);
+      setToolbarImage("");
       setSearchValue("");
     }
   };
@@ -95,22 +108,24 @@ export default function SearchBar() {
       setOpen(false);
     } else {
       setOpen(true);
-      const response = await fetch(
-        `/api/search/${menuItem}/?searchValue=${e.target.value}`
-      );
+      const response = await api.search(menuItem, e.target.value);
       const data = await response.json();
       if (data.length === 0) {
         setOpen(false);
       }
-      const searchList = data.map((dataItem) => {
-        const item = {
-          name: dataItem.Name || dataItem.teamName || dataItem.username,
-          id: dataItem.playerId || dataItem.teamId || dataItem.id,
-        };
-        return item;
-      });
+      const searchList = parseDataItems(data);
       setSearchList(searchList);
     }
+  };
+
+  const parseDataItems = (data) => {
+    return data.map((dataItem) => {
+      const item = {
+        name: dataItem.Name || dataItem.teamName || dataItem.username,
+        id: dataItem.playerId || dataItem.teamId || dataItem.id,
+      };
+      return item;
+    });
   };
 
   useEffect(() => {
@@ -120,6 +135,12 @@ export default function SearchBar() {
       document.removeEventListener("mousedown", handleClickList);
     };
   }, []);
+
+  useEffect(() => {
+    if (menuItem === "players") {
+      setTeamId("");
+    }
+  }, [menuItem]);
   return (
     <>
       <div>

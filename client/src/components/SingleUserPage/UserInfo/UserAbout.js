@@ -12,7 +12,7 @@ import {
   Box,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-
+import hostUrl from "../../../api/servers"
 import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   infoBoxCardOne: {
@@ -88,6 +88,8 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     overflowY: "scroll",
     width: "100%",
+    // display: "flex",
+    // flexDirection: "column",
   },
   followerCard: {
     display: "flex",
@@ -96,6 +98,7 @@ const useStyles = makeStyles((theme) => ({
     width: "90%",
     height: "40%",
     margin: "auto",
+    // marginTop: 1,
     "&:hover": {
       background: "rgba(0, 0, 0, 0.1)",
     },
@@ -180,7 +183,8 @@ export default function UserAbout({
         <div className={classes.avatars}>
           {followingList
             .map((followee) => {
-              const imageUrl = `${followee.path}`;
+              const host = hostUrl;
+              const imageUrl = `${host}${followee.path}`;
               return (
                 <Link
                   key={followee.followee_id}
@@ -209,7 +213,8 @@ export default function UserAbout({
           <Box className={classes.modal}>
             <div className={classes.scroll}>
               {followingList.map((followee) => {
-                const imageUrl = `${followee.path}`;
+                const host = hostUrl;
+                const imageUrl = `${host}${followee.path}`;
                 return (
                   <Link
                     className={classes.followerLink}

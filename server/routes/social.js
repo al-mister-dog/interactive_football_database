@@ -23,5 +23,4 @@ router.post("/favourite-teams", favouriteTeamsController.saveFavouriteTeams);
 
 router.get("/interests", interestsController.getInterests);
 router.post("/interests", interestsController.addInterests);
-
 module.exports = router;

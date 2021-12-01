@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useGlobalContext } from "../../context";
 import { Tooltip, IconButton } from "@material-ui/core";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
+import api from "../../api"
 
 export default function UserOptions() {
   const { user, userTable } = useGlobalContext();
@@ -15,26 +16,16 @@ export default function UserOptions() {
   };
 
   const checkBookmark = async () => {
-    const response = await fetch(
-      `/api/social/check-bookmark/?tableId=${tableId}&bookmarkerId=${bookmarkerId}`
-    );
+    const response = await api.checkBookmark(tableId, bookmarkerId);
     const data = await response.json();
     data.length > 0 ? setIsBookmarked(true) : setIsBookmarked(false);
   };
   const bookmarkTable = async () => {
-    const options = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        tableId: tableId,
-        bookmarkeeId: bookmarkeeId,
-        bookmarkerId: bookmarkerId,
-      }),
-    };
-    const response = await fetch(
-      "/api/social/bookmark",
-      options
-    );
+    const response = await api.bookmarkTable({
+      tableId,
+      bookmarkeeId,
+      bookmarkerId,
+    });
     const data = response.json();
     if (data.success) {
       setIsBookmarked(true);
@@ -42,18 +33,7 @@ export default function UserOptions() {
     checkBookmark();
   };
   const unBookmarkTable = async () => {
-    const options = {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        tableId: tableId,
-        bookmarkerId: bookmarkerId,
-      }),
-    };
-    const response = await fetch(
-      "/api/social/unbookmark",
-      options
-    );
+    const response = await api.unBookmarkTable({ tableId, bookmarkerId });
     const data = response.json();
     if (data.success) {
       setIsBookmarked(false);
@@ -79,5 +59,5 @@ export default function UserOptions() {
         )}
       </>
     );
-  } else return (<></>)
+  } else return <></>;
 }

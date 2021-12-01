@@ -1,12 +1,20 @@
+//TODOS
+// sort out matching functions getProfilePic and getProfilePicForTable
+
 import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { tabs } from "./data/menuData";
+
+import hostUrl from './api/servers'
+import api from './api';
+
 const AppContext = React.createContext();
 const menuTabs = tabs;
 const toolbarTypes = {
   canEdit: false,
   canAdd: false,
 };
+
 function createStringQuery(selected) {
   const queryArray = [];
   for (let i = 0; i < selected.length; i++) {
@@ -98,9 +106,7 @@ const AppProvider = ({ children }) => {
   };
 
   const getTeamLogo = async (id) => {
-    const response = await fetch(
-      `/api/table/team-logo/?id=${id}`
-    );
+    const response = await api.getTeamLogo(id);
     const data = await response.json();
     const teamLogo = data[0].imageUrl;
     setToolbarImage(teamLogo);
@@ -135,9 +141,7 @@ const AppProvider = ({ children }) => {
   };
 
   const getTableData = async (string) => {
-    const response = await fetch(
-      `${string}`
-    );
+    const response = await api.getTableData(string);
     const data = await response.json();
     setTable(data);
   };
@@ -165,7 +169,7 @@ const AppProvider = ({ children }) => {
     setCurrentSelectedIndex(null);
     setCustomFunc("");
     setSelectedIndexes([]);
-    setTableTitle(lastTableTitle)
+    setTableTitle(lastTableTitle);
     teamId ? getTeamData(teamId) : getPlayerData();
   };
 
@@ -226,10 +230,8 @@ const AppProvider = ({ children }) => {
   //USER FUNCTIONS
 
   async function addTablesToStatMenu(id) {
-    console.log(id);
-    const response = await fetch(
-      `/api/users/get-user-tables/?userId=${id}`
-    );
+    //await getUserTables
+    const response = await api.getUserTables(id);
     const data = await response.json();
     if (data.length === 0) {
       return;
@@ -239,9 +241,7 @@ const AppProvider = ({ children }) => {
   }
 
   async function getUserTable(id) {
-    const response = await fetch(
-      `/api/users/user-table-info/?id=${id}`
-    );
+    const response = await api.userTableInfo(id);
     const data = await response.json();
     setUserTable(data[0]);
   }
@@ -265,11 +265,11 @@ const AppProvider = ({ children }) => {
   }
 
   function getUserTableTitle(userId, tableTitle, username, fromRandomFunc) {
-    let featured = '';
+    let featured = "";
     if (fromRandomFunc) {
-      featured = 'Featured Table: '
+      featured = "Featured Table: ";
     }
-    
+
     const title = (
       <Link
         to={`user/${userId}`}
@@ -284,9 +284,7 @@ const AppProvider = ({ children }) => {
   }
 
   const getUsers = async () => {
-    const response = await fetch(
-      "/api/users/get-users"
-    );
+    const response = await api.getUsers();
     const data = await response.json();
     const userData = data.map((user) => {
       return {
@@ -298,9 +296,10 @@ const AppProvider = ({ children }) => {
   };
 
   const checkToken = async () => {
+    //token
     const tokenString = localStorage.getItem("token");
-    const response = await fetch(
-      `/api/auth/get-token/?token=${tokenString}`
+    const response = await api.checkToken(
+      tokenString
     );
     const data = await response.json();
     const token = data;
@@ -312,13 +311,12 @@ const AppProvider = ({ children }) => {
 
   const getUserByToken = async (token) => {
     const id = token.id;
-    const response = await fetch(
-      `/api/users/get-single-user/?id=${id}`
+    const response = await api.getUserByToken(
+      id
     );
     const data = await response.json();
     const existingUser = data[0];
     if (existingUser) {
-      console.log(existingUser);
       getProfilePic(existingUser.id);
       setUser(existingUser);
       addTablesToStatMenu(existingUser.id);
@@ -326,42 +324,34 @@ const AppProvider = ({ children }) => {
   };
 
   const getProfilePic = async (id) => {
-    const result = await fetch(
-      `/api/users/profile-pic/?id=${id}`
-    );
+    const result = await api.profilePic(id);
     const data = await result.json();
     if (data.length > 0) {
       const path = data[0].path;
-      const imageUrl = `${path}`;
-      console.log(imageUrl);
+      const imageUrl = `${hostUrl}${path}`;
       setProfilePic(imageUrl);
     }
   };
 
   const getUserPicForTable = async (id) => {
-    const result = await fetch(
-      `/api/users/profile-pic/?id=${id}`
-    );
+    const result = await api.profilePic(id);
     const data = await result.json();
     if (data.length > 0) {
       const path = data[0].path;
-      const imageUrl = `${path}`;
+      const imageUrl = `${hostUrl}${path}`;
       setToolbarImage(imageUrl);
     }
   };
 
   const getFavouriteTeams = async (id) => {
-    const result = await fetch(
-      `/api/social/favourite-teams/?id=${id}`
-    );
+    const result = await api.getFavouriteTeams(id);
     const data = await result.json();
     setFavouriteTeams(data);
   };
 
   async function getRandomUserTable() {
-    const randomUrlResponse = await fetch(
-      `/api/table/get-random-url`
-    );
+    //footy
+    const randomUrlResponse = await api.getRandomTable()
     const randomUrldata = await randomUrlResponse.json();
     if (randomUrldata.length === 0) {
       return;
@@ -374,7 +364,7 @@ const AppProvider = ({ children }) => {
     const tableTitle = userTable.title;
     const fromRandomFunc = true;
     await getUserPicForTable(userId);
-    await getUserTable(urlId);
+    await getUserTable(urlId); //should be userTableId
     getTableData(url);
     getUserTableTitle(userId, tableTitle, username, fromRandomFunc);
   }
@@ -445,7 +435,7 @@ const AppProvider = ({ children }) => {
         setToolbarImage,
         getUserPicForTable,
         getTeamLogo,
-        setLastTableTitle
+        setLastTableTitle,
       }}
     >
       {children}

@@ -10,6 +10,10 @@ import UserBookmarks from "../components/SingleUserPage/UserInfo/UserBookmarks";
 import { CssBaseline, Container, Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
+import hostUrl from "../api/servers";
+
+import api from "../api";
+
 const useStyles = makeStyles((theme) => ({
   container: {
     marginTop: 70,
@@ -80,117 +84,102 @@ export default function SingleUser() {
   };
 
   const handleDeleteTable = async (id) => {
-    const options = {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id: id,
-      }),
-    };
-    const response = await fetch(
-      `/api/users/delete-table`,
-      options
-    );
-    const data = response.json();
-    getUserTables();
+    try {
+      const response = await api.deleteTable({ id });
+      if (response.status === 200) {
+        console.log("all good");
+        getUserTables();
+      } else {
+        console.log("try");
+        return;
+      }
+    } catch (error) {
+      console.log("catch");
+      return;
+    }
   };
 
   async function getProfileUser() {
     try {
-      const response = await fetch(
-        `/api/users/get-single-user/?id=${id}`
-      );
+      const response = await api.getUser(id);
       const data = await response.json();
-      setProfileUser(data[0]);
+      if (response.status === 200) {
+        setProfileUser(data[0]);
+      } else {
+        console.log("something went wrong");
+      }
     } catch (error) {
       console.log(error);
-      //HANDLE ERROR
     }
   }
 
   const getProfilePic = async (id) => {
-    const result = await fetch(
-      `/api/users/profile-pic/?id=${id}`
-    );
-    const data = await result.json();
-    if (data.length > 0) {
-      const path = data[0].path;
-      const imageUrl = `${path}`;
-      setProfilePic(imageUrl);
+    try {
+      const result = await api.profilePic(id);
+      const data = await result.json();
+      if (data.length > 0) {
+        const path = data[0].path;
+        const imageUrl = `${hostUrl}${path}`;
+        setProfilePic(imageUrl);
+      }
+    } catch (error) {
+      return;
     }
   };
 
   async function getFollowers() {
     try {
-      const response = await fetch(
-        `/api/social/get-followers/?id=${id}`
-      );
+      const response = await api.getFollowers(id);
       const data = await response.json();
+      console.log(data);
       setFollowers(data);
     } catch (error) {
-      console.log(error);
-      //HANDLE ERROR
+      return;
     }
   }
 
   const getFollowingList = async () => {
-    const result = await fetch(
-      `/api/social/get-user-followers/?id=${id}`
-    );
-    const data = await result.json();
+    const response = await api.getFollowingList(id);
+    const data = await response.json();
     setFollowingList(data);
   };
 
   const getFavouriteTeams = async (id) => {
-    const result = await fetch(
-      `/api/social/favourite-teams/?id=${id}`
-    );
+    const result = await api.getFavouriteTeams(id);
     const data = await result.json();
     setFavouriteTeams(data);
   };
 
   const getInterests = async () => {
-    const response = await fetch(
-      `/api/social/interests/?id=${id}`
-    );
+    console.log("id" + id);
+    const response = await api.getInterests(id);
     const data = await response.json();
     if (data.length > 0) {
       setInterests(data[0].text);
     } else {
       setInterests("");
     }
+    console.log(data.length);
   };
 
   async function getUserTables() {
-    const response = await fetch(
-      `/api/users/get-user-tables/?userId=${id}`
-    );
+    const response = await api.getUserTables(id);
     const data = await response.json();
     setUserTables(data);
   }
 
   const getBookmarkedUserTables = async () => {
-    const result = await fetch(
-      `/api/social/get-user-bookmarks/?id=${id}`
-    );
+    const result = await api.getBookmarkedUserTables(id);
     const data = await result.json();
     setBookmarkList(data);
   };
 
   const handleDeleteBookmark = async (id) => {
-    const options = {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id: id,
-      }),
-    };
-    const response = await fetch(
-      "/api/social/bookmark",
-      options
-    );
-    // const data = response.json();
-    //HANDLE ERROR AND SUCCESS
+    const response = await api.deleteBookmark({ id });
+    const data = response.json();
+    if (data.success) {
+      console.log(data);
+    }
     getBookmarkedUserTables();
   };
 

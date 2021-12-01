@@ -1,30 +1,28 @@
-require('dotenv').config()
+require("dotenv").config();
+const ServerException = require("../errors/ServerException");
 const fs = require("fs");
 const schedule = require("../data/apiCallSchedule");
 
-const scheduleFile = './data/apiCallSchedule.js';
-const leaguesFile = './data/leagues.js';
+const scheduleFile = "./data/apiCallSchedule.js";
+const leaguesFile = "./data/leagues.js";
 const oneDay = 86400000;
 const leagueIds = [
-  {id: 61, function: "ligue1"},
-  {id: 39, function: "premierLeague"},
-  {id: 78, function: "bundesliga"},
-  {id: 135, function: "serieA"},
-  {id: 140, function: "laLiga"},
-]
+  { id: 61, function: "ligue1" },
+  { id: 39, function: "premierLeague" },
+  { id: 78, function: "bundesliga" },
+  { id: 135, function: "serieA" },
+  { id: 140, function: "laLiga" },
+];
 
 exports.scheduleCall = () => {
   const time = new Date().getTime();
   if (time > schedule.time) {
     const newTime = time + oneDay;
     fs.unlinkSync(scheduleFile);
-    fs.writeFileSync(
-      scheduleFile,
-      `module.exports = {time: ${newTime}}`
-    );
-    makeApiCall()
+    fs.writeFileSync(scheduleFile, `module.exports = {time: ${newTime}}`);
+    makeApiCall();
   } else {
-    console.log('dont make api call')
+    console.log("dont make api call");
     return;
   }
 };
@@ -44,8 +42,11 @@ function makeApiCall() {
       },
     };
     request(options, function (error, response, body) {
-      if (error) throw new Error(error);
-      fs.appendFileSync(leaguesFile, `exports.${leagueId.function} = ${body}\n`);
+      if (error) return next(new ServerException());
+      fs.appendFileSync(
+        leaguesFile,
+        `exports.${leagueId.function} = ${body}\n`
+      );
     });
   });
 }

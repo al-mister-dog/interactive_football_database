@@ -3,18 +3,20 @@ import { Menu, MenuItem, Chip, Avatar } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { useGlobalContext } from "../../../context";
 import { makeStyles } from "@material-ui/core/styles";
+import api from "../../../api"
 
 const useStyles = makeStyles((theme) => ({
   chip: {
     marginTop: 7,
-    '@media (max-width: 780px)' : {
-      marginTop: 0
-    }
-  }
-}))
+    "@media (max-width: 780px)": {
+      marginTop: 0,
+    },
+  },
+}));
 export default function LoggedInTab() {
-  const classes = useStyles()
-  const { user, setUser, setMenu, setLoggedIn, profilePic, reset } = useGlobalContext();
+  const classes = useStyles();
+  const { user, setUser, setMenu, setLoggedIn, profilePic, reset } =
+    useGlobalContext();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -23,34 +25,30 @@ export default function LoggedInTab() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
+
   function onLogout() {
-    removeToken()
+    removeToken();
     setMenu(null);
     setLoggedIn(false);
     setUser({
       id: null,
       username: "",
     });
-    reset()
+    reset();
     handleClose();
   }
 
   async function removeToken() {
     const token = JSON.parse(localStorage.getItem("token"));
-    const options = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        token: token
-      }),
-    };
-    const response = await fetch(
-      "/api/auth/token/remove-token",
-      options
-    );
-    const data = response.json();
-    console.log(data)
+    try {
+      const response = await api.removeToken({token});
+      const data = response.json();
+      if (response.status === 500) {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
     localStorage.removeItem("token");
   }
 

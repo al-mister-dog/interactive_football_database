@@ -1,12 +1,13 @@
 import axios from "axios";
 import { Tooltip, IconButton, Input } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
+import host from "../../../api/servers"
 
 async function postImage({ image, userId }) {
   const formData = new FormData();
   formData.append("image", image);
   formData.append("userId", userId);
-  const result = await axios.post("/api/images/upload", formData, {
+  const result = await axios.post(`${host}/api/images/upload`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return result.data;

@@ -113,7 +113,7 @@ exports.deleteToken = async (token) => {
 // const scheduleCleanup = () => {
 //   setInterval(async () => {
 //     const oneWeekAgo = new Date(Date.now() - ONE_WEEK_IN_MILLIS);
-//     await DESTROY TOKEN WHERE LAST USED AT IS LESS THAN ONE WEEK AGO
+//     await Token.destroy({ where: { lastUsedAt: { [Sequelize.Op.lt]: oneWeekAgo } } });
 //   }, 60 * 60 * 1000);
 // };
 

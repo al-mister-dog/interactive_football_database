@@ -13,6 +13,7 @@ import {
 } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import SaveIcon from "@material-ui/icons/Save";
+import api from '../../api'
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -41,7 +42,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ModalSave() {
   const classes = useStyles();
-  const { addTablesToStatMenu, user, currentQuery, setTableTitle } = useGlobalContext();
+  const { addTablesToStatMenu, user, currentQuery, setTableTitle } =
+    useGlobalContext();
   const [modalOpen, setModalOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -82,7 +84,7 @@ export default function ModalSave() {
     if (title && description) {
       saveUserTable(title);
       setTitle("");
-      setTableTitle(`${title}: saved`)
+      setTableTitle(`${title}: saved`);
     }
   };
   const onAddUserTable = () => {
@@ -93,22 +95,13 @@ export default function ModalSave() {
     const url = currentQuery;
     const userId = user.id;
     const token = localStorage.getItem("token");
-
-    const options = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        url: url,
-        userId: userId,
-        title: title,
-        description: description,
-        token: token,
-      }),
-    };
-    const response = await fetch(
-      "/api/users/save-user-table",
-      options
-    );
+    const response = await api.saveUsertable({
+      url,
+      userId,
+      title,
+      description,
+      token,
+    });
     const data = await response.json();
     if (data.error) {
       setMsg(data.msg);

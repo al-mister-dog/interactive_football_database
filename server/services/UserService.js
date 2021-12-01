@@ -1,7 +1,8 @@
 const db = require("../utils/database");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
-const EmailService = require('../services/EmailService')
+const EmailService = require('../services/EmailService');
+const EmailException = require('../errors/EmailException')
 
 
 const randomString = (length) => {
@@ -25,13 +26,12 @@ exports.save = async (user) => {
   const hash = await bcrypt.hash(password, 10);
   const activationToken = randomString(16);
   const sql = `INSERT INTO users (username, email, password, activationtoken) VALUES ('${username}', '${email}', '${hash}', '${activationToken}')`;
-
   await createUser(sql);
   try {
     await EmailService.sendAccountActivation(email, activationToken);
   } catch (err) {
     console.log(err);
-    throw new Error("email not sent");
+    throw new EmailException();
   }
 };
 

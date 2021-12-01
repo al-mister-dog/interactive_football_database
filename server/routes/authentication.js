@@ -1,72 +1,47 @@
 const express = require("express");
 const router = express.Router();
-
-const { check, validationResult } = require("express-validator");
+const validate = require("../middleware/validation");
+const { validationResult } = require("express-validator");
 const UserService = require("../services/UserService");
 const TokenService = require("../services/TokenService");
+const AuthenticationException = require("../errors/AuthenticationException");
 const bcrypt = require("bcrypt");
 
-router.post(
-  "/signup",
-  check("username")
-    .notEmpty()
-    .withMessage("username_null")
-    .bail()
-    .isLength({ min: 3, max: 32 })
-    .withMessage("username_size"),
-  check("email")
-    .notEmpty()
-    .withMessage("email_null")
-    .bail()
-    .isEmail()
-    .withMessage("email_invalid")
-    .bail()
-    .custom(async (email) => {
-      const user = await UserService.findByEmail(email);
-      if (user.length > 0) {
-        throw new Error("email in use");
-      }
-    }),
-  check("password")
-    .notEmpty()
-    .withMessage("password_null")
-    .bail()
-    .isLength({ min: 6 })
-    .withMessage("password_size")
-    .bail()
-    .matches(/^(?=.*[a-z])(?=.*\d).*$/)
-    .withMessage("password_pattern"),
-  async (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.send(errors.array());
-    }
-    try {
-      await UserService.save(req.body);
-      return res.send({ msg: "All signed up", success: true });
-    } catch (err) {
-      return res.send([{ msg: "There was a server error. Try again later" }]);
-    }
-  }
-);
-
-router.post("/login", check("email").isEmail(), async (req, res, next) => {
+router.post("/signup", validate.user, async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.send(errors.array());
+    return next(new ValidationException(errors.array()));
+  }
+  try {
+    await UserService.save(req.body);
+    return res.send({ msg: "All signed up", success: true });
+  } catch (err) {
+    next(err);
+  }
+});
+
+router.post("/login", validate.email, async (req, res, next) => {
+  const errors = validationResult(req);
+  const hasErrors = !errors.isEmpty();
+  if (hasErrors) {
+    return next(
+      new AuthenticationException(
+        "The email address you entered isn't connected to an account"
+      )
+    );
   }
   const { email, password } = req.body;
   const userResponse = await UserService.findByEmail(email);
   const user = userResponse[0];
   if (!user) {
-    return res.send({ msg: "email not found", error: true });
+    return next(new AuthenticationException("Email not found"));
   }
   const match = await bcrypt.compare(password, user.password);
   if (!match) {
-    return res.send({ msg: "incorrect password", error: true });
+    return next(new AuthenticationException("Incorrect password"));
   }
   if (user.inactive) {
-    return res.send({ msg: "innactive account", error: true });
+    return next(new AuthenticationException("Inactive account"));
   }
   const token = await TokenService.createToken(user);
   res.send({
@@ -74,23 +49,18 @@ router.post("/login", check("email").isEmail(), async (req, res, next) => {
     username: user.username,
     image: user.image,
     token,
-  }); 
+  });
 });
 
 router.post("/token/remove-token", async (req, res) => {
   const token = req.body.token;
   try {
-    const logout = await TokenService.deleteToken(token);
-    if (logout.serverStatus === 34) {
-      res.send({success: true})
-    } else {
-      res.send({msg: "logged out but dont know why"})
-    }
+    await TokenService.deleteToken(token);
+    res.send({ success: true });
   } catch (err) {
-    res.send({error: true, msg: "Something went wrong"})
+    return next(new ServerException());
   }
-  
-})
+});
 
 router.post("/token/:token", async (req, res, next) => {
   const token = req.params.token;

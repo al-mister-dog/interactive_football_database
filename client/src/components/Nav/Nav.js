@@ -19,7 +19,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { hasChildren } from "../../menuUtils";
 import { useGlobalContext } from "../../context";
 
 const useStyles = makeStyles((theme) => ({
@@ -55,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
       minWidth: "50px",
       fontSize: ".8rem",
       margin: 0,
-      padding: 0
+      padding: 0,
     },
   },
   userTabs: {
@@ -63,6 +62,24 @@ const useStyles = makeStyles((theme) => ({
     padding: "0",
   },
 }));
+
+function hasChildren(item) {
+  const { items: children } = item;
+
+  if (children === undefined) {
+    return false;
+  }
+
+  if (children.constructor !== Array) {
+    return false;
+  }
+
+  if (children.length === 0) {
+    return false;
+  }
+
+  return true;
+}
 
 export default function Nav() {
   const classes = useStyles();
@@ -96,6 +113,7 @@ export default function Nav() {
 
   const list = () => (
     <Box
+      data-testid="Box"
       sx={{ width: 250 }}
       role="presentation"
       onKeyDown={toggleDrawer(false)}
@@ -114,8 +132,8 @@ export default function Nav() {
 
   return (
     <>
-      <AppBar>
-        <Toolbar className={classes.toolbar}>
+      <AppBar data-testid="AppBar">
+        <Toolbar data-testid="Toolbar" className={classes.toolbar}>
           <Link
             to="/"
             style={{ textDecoration: "none", color: "inherit" }}

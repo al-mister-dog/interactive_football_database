@@ -3,6 +3,7 @@ import { Button, Menu, MenuItem, Collapse } from "@material-ui/core";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import { useGlobalContext } from "../../../context";
+import api from "../../../api";
 
 const leagues = [
   {
@@ -85,31 +86,34 @@ const leagues = [
 
 const ITEM_HEIGHT = 48;
 
-
-export default function FaveTeamButton({ teamName, teamId, faveTeamIds, number, id, getFavouriteTeams, handleModalClose }) {
+export default function FaveTeamButton({
+  teamName,
+  faveTeamIds,
+  number,
+  id,
+  getFavouriteTeams,
+}) {
   const { user } = useGlobalContext();
   const [anchorEl, setAnchorEl] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [open, setOpen] = useState({});
-  const [teamNameBtn, setTeamNameBtn] = useState(teamName)
-  
+  const [teamNameBtn, setTeamNameBtn] = useState(teamName);
+
   async function addTeamToFavourites(teamId) {
-    console.log('addTeamToFavourites')
     const userId = user.id;
-    const options = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        teamId: teamId,
-        userId: userId,
-        num: number
-      }),
-    };
-    await fetch(
-      "/api/social/favourite-teams",
-      options
-    );
-    getFavouriteTeams(id)
+    const num = number;
+    try {
+      const response = await api.addTeam({ teamId, userId, num });
+      if (response.status === 200) {
+        getFavouriteTeams(id);
+      } else {
+        console.log("something went wrong");
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+      return;
+    }
   }
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -127,11 +131,11 @@ export default function FaveTeamButton({ teamName, teamId, faveTeamIds, number, 
   };
 
   const handleTeamItemClick = (teamId, title) => {
-    setTeamNameBtn(title)
+    setTeamNameBtn(title);
     addTeamToFavourites(teamId);
     setMenuOpen(false);
   };
-  
+
   return (
     <>
       <Button
@@ -162,7 +166,12 @@ export default function FaveTeamButton({ teamName, teamId, faveTeamIds, number, 
       >
         {leagues.map((league) => {
           const { id, title, teams } = league;
-          const teamsToChoose = teams.filter((team) => team.id !== faveTeamIds[0] && team.id !== faveTeamIds[1] && team.id !== faveTeamIds[2])
+          const teamsToChoose = teams.filter(
+            (team) =>
+              team.id !== faveTeamIds[0] &&
+              team.id !== faveTeamIds[1] &&
+              team.id !== faveTeamIds[2]
+          );
           return (
             <>
               <MenuItem
@@ -174,20 +183,17 @@ export default function FaveTeamButton({ teamName, teamId, faveTeamIds, number, 
                 {open[id] ? <ExpandLess /> : <ExpandMore />}
               </MenuItem>
               <Collapse in={open[id]} timeout="auto" unmountOnExit>
-              
-                {
-                
-                teamsToChoose.map((team) => {
+                {teamsToChoose.map((team) => {
                   const { id, title } = team;
                   return (
-                    <MenuItem key={id} onClick={() => handleTeamItemClick(id, title)}>
+                    <MenuItem
+                      key={id}
+                      onClick={() => handleTeamItemClick(id, title)}
+                    >
                       {title}
                     </MenuItem>
                   );
-                })
-                
-                }
-                
+                })}
               </Collapse>
             </>
           );

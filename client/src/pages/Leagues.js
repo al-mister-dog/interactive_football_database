@@ -15,6 +15,8 @@ import {
   Typography,
 } from "@material-ui/core";
 
+import api from "../api"
+
 const useStyles = makeStyles((theme) => ({
   table: {
     width: "60%",
@@ -33,21 +35,20 @@ const useStyles = makeStyles((theme) => ({
       cursor: "pointer",
     },
     "@media (max-width: 780px)": {
-    margin: 0,  
+      margin: 0,
       minWidth: "10px",
-      maxWidth: "10px"
+      maxWidth: "10px",
     },
   },
   teamCell: {
     minWidth: "10px",
     maxWidth: "200px",
-    display: 'flex',
+    display: "flex",
     "&:hover": {
       cursor: "pointer",
     },
     "@media (max-width: 780px)": {
-      
-      minWidth: "80px"
+      minWidth: "80px",
     },
   },
   teamLogo: {
@@ -58,16 +59,16 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
     padding: 0,
     "@media (max-width: 780px)": {
-      fontSize: '0.5rem'
+      fontSize: "0.5rem",
     },
   },
   cellRow: {
     minWidth: "10px",
     maxWidth: "200px",
     "@media (max-width: 780px)": {
-    margin: 0,  
+      margin: 0,
       minWidth: "10px",
-      maxWidth: "10px"
+      maxWidth: "10px",
     },
   },
   link: {
@@ -87,13 +88,13 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px",
     "@media (max-width: 780px)": {
       display: "flex",
-      flexDirection: "row"
+      flexDirection: "row",
     },
   },
   selectedLogo: {
     "@media (max-width: 780px)": {
       maxWidth: "50px",
-      maxHeight: "50px"
+      maxHeight: "50px",
     },
   },
   titleAndPosition: {
@@ -109,7 +110,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "row",
     "@media (max-width: 780px)": {
-      marginTop: 10
+      marginTop: 10,
     },
   },
   position: {
@@ -226,12 +227,9 @@ export default function DenseTable() {
       135: "serie-a",
       140: "la-liga",
     };
-    console.log(leagueIds[id]);
-    const response = await fetch(
-      `/api/leagues/${leagueIds[id]}`
-    );
+    const leagueId = leagueIds[id];
+    const response = await api.leagueApiCall(leagueId);
     const data = await response.json();
-    console.log(data);
     const league = data.response[0].league.standings;
     mapLeague(league);
   };
@@ -265,17 +263,22 @@ export default function DenseTable() {
                   getTeamFromLeagueTable(team.id, team.Club, team.logo)
                 }
               >
-                <img src={team.logo} alt={team.Club} className={classes.teamLogo} />
+                <img
+                  src={team.logo}
+                  alt={team.Club}
+                  className={classes.teamLogo}
+                />
                 <p className={classes.teamLabel}>{team.Club}</p>
               </TableCell>
               <TableCell className={classes.cellRow}>{team.MP}</TableCell>
               <TableCell className={classes.cellRow}>{team.W}</TableCell>
               <TableCell className={classes.cellRow}>{team.D}</TableCell>
               <TableCell className={classes.cellRow}>{team.L}</TableCell>
+              <TableCell className={classes.cellRow}>{team.Pts}</TableCell>
               <TableCell className={classes.cellRow}>{team.GF}</TableCell>
               <TableCell className={classes.cellRow}>{team.GA}</TableCell>
               <TableCell className={classes.cellRow}>{team.GD}</TableCell>
-              <TableCell className={classes.cellRow}>{team.Pts}</TableCell>
+
               <TableCell className={classes.cellRow}>
                 {team["Last 5"]}
               </TableCell>
@@ -290,8 +293,12 @@ export default function DenseTable() {
         aria-describedby="modal-modal-description"
       >
         <Box className={classes.modal}>
-          <div >
-            <img className={classes.selectedLogo} src={selectedLogo} alt={selectedTeam} />
+          <div>
+            <img
+              className={classes.selectedLogo}
+              src={selectedLogo}
+              alt={selectedTeam}
+            />
           </div>
           <div className={classes.titleAndPosition}>
             <Typography variant="h4">{selectedTeam}</Typography>

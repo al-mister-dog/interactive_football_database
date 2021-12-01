@@ -1,4 +1,5 @@
-require('dotenv').config()
+require("dotenv").config();
+const db = require("../utils/database");
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
 
@@ -6,7 +7,7 @@ const transporter = nodemailer.createTransport(
   sendgridTransport({
     auth: {
       api_key:
-       process.env.SENDGRID_KEY,
+        process.env.SENDGRID_KEY,
     },
   })
 );
@@ -21,7 +22,7 @@ exports.sendAccountActivation = async (email, token) => {
       <b>Please click below link to activate your account</b>
     </div>
     <div>
-      <a href="http://localhost:4000/#/login?token=${token}">Activate</a>
+      <a href="${host}/#/login?token=${token}">Activate</a>
     </div>
     `,
   });
