@@ -43,7 +43,7 @@ describe("post requests", () => {
         description: "description",
         url: "test.com",
         userId: 1,
-        token: "3920551edf01e14e70348363706f886c",
+        token: "Generic high entropy secret",
       });
     expect(response.status).toBe(200);
   });
