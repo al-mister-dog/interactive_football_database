@@ -1,4 +1,3 @@
-require("dotenv").config();
 const ServerException = require("../errors/ServerException");
 const fs = require("fs");
 const schedule = require("../data/apiCallSchedule");

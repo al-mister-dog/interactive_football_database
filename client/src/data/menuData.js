@@ -188,8 +188,6 @@ const tabs = [
       { title: "My Stats", items: [] },
       { title: "Team Age", stat: "teamAge" },
       { title: "Average Age", stat: "averageAge" },
-      { title: "Combined Market Value", stat: "combinedMarketValue" },
-      { title: "Home Grown Players", stat: "homeGrownPlayers" },
       { title: "Most Defenders", stat: "mostDefenders" },
       { title: "Most Forwards", stat: "mostForwards" },
     ],

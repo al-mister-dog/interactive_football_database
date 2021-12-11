@@ -15,6 +15,4 @@ apiCall.scheduleCall();
 app.use("/api", routes);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 4000;
-
-app.listen(PORT);
+module.exports = app;

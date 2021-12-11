@@ -12,7 +12,8 @@ exports.saveUserTable = async (req, res, next) => {
   const response = await TokenService.findToken(token);
   const tokenFound = response[0];
   if (!tokenFound) {
-    return res.send({ error: true, msg: "You must be logged in to do that" });
+    console.log("no token found")
+    return res.status(401).send({ error: true, msg: "You must be logged in to do that" });
   }
   const sql = `INSERT INTO user_tables (title, description, url, user_id) VALUES ('${title}', '${description}', '${url}', ${userId})`;
   db.query(sql, (err, result) => {

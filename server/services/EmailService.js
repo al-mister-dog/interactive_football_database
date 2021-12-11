@@ -1,5 +1,3 @@
-require("dotenv").config();
-const db = require("../utils/database");
 const nodemailer = require("nodemailer");
 const sendgridTransport = require("nodemailer-sendgrid-transport");
 

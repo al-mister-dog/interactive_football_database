@@ -2,3 +2,4 @@ when accessing a player from the search, the table has a bookmark option. decide
 
 when signup is completed, the signup button should be disabled
 
+sort out the token email thing

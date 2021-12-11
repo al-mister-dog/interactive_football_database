@@ -82,6 +82,7 @@ export default function ModalSave() {
     useState("");
 
   const [signedUp, setSignedUp] = useState(false);
+  const [signingUp, setSigningUp] = useState(false)
   const [msg, setMsg] = useState("");
 
   const validEmail = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
@@ -178,6 +179,7 @@ export default function ModalSave() {
   };
   const submitUserInfo = async () => {
     try {
+      setSigningUp(true)
       const response = await api.signup({username, email, password});
       const data = await response.json();
       if (response.status === 502) {
@@ -185,6 +187,8 @@ export default function ModalSave() {
         return;
       } else if (data.success) {
         setMsg("signed up! check email to activate");
+        setSignedUp(true);
+        setSigningUp(false)
       }
     } catch (error) {
       setMsg("there was an error. please try again later")
@@ -275,7 +279,8 @@ export default function ModalSave() {
                   errorName ||
                   errorEmail ||
                   errorPassword ||
-                  errorPasswordRepeat
+                  errorPasswordRepeat ||
+                  signingUp
                     ? true
                     : false
                 }

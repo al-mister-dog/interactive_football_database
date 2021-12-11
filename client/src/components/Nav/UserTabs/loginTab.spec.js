@@ -76,5 +76,6 @@ describe("Login Tab", () => {
       setupEmail("invalid email");
       expect(button).toBeDisabled();
     });
+    
   });
 });

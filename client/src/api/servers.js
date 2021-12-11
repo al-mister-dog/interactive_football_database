@@ -1,5 +1,5 @@
 const servers = {
-  localHost: process.env.LOCAL_HOST,
-  server: process.env.SERVER,
+  localHost: "http://localhost:4000",
+  server: "https://footy-app-server-test.herokuapp.com",
 };
 export default servers.server;

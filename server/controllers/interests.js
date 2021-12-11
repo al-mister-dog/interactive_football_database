@@ -13,7 +13,6 @@ exports.getInterests = (req, res, next) => {
 exports.addInterests = (req, res, next) => {
   const id = req.body.id;
   const text = req.body.text;
-  console.log(id, text)
   const sql = `INSERT INTO interests (user_id, text) VALUES (${id}, '${text}') ON DUPLICATE KEY UPDATE text = '${text}'`;
   db.query(sql, (err, result) => {
     if (err) return next(new ServerException());

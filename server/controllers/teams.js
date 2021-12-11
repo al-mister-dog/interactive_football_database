@@ -3,7 +3,7 @@ const ServerException = require("../errors/ServerException");
 
 exports.getTeam = (req, res, next) => {
   const id = req.params.id;
-  const sql = `SELECT * FROM teams WHERE id = ${id}`;
+  const sql = `SELECT * FROM teams WHERE teamId = ${id}`;
   db.query(sql, (err, result) => {
     if (err) return next(new ServerException());
     res.send(result);

@@ -1,1 +1,1 @@
-module.exports = {time: 1638372061071}
+module.exports = {time: 1}

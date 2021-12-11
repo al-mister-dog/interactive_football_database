@@ -3,6 +3,7 @@ const sqlMethods = require("../utils/sql");
 const ServerException = require("../errors/ServerException");
 
 exports.getData = (req, res, next) => {
+  console.log(req.query.id)
   const sql = sqlMethods.getData(req.query.id);
   sqlMethods.query(sql, res);
 };

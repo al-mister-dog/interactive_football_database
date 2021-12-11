@@ -63,7 +63,7 @@ function insertToken(tokenObject) {
 
 exports.findToken = (token) => {
   return new Promise(function (resolve, reject) {
-    const sql = `SELECT * FROM tokens WHERE token = ${token}`;
+    const sql = `SELECT * FROM tokens WHERE token = '${token}'`;
     db.query(sql, (err, result) => {
       if (err) reject(err);
       resolve(result);
@@ -109,13 +109,6 @@ exports.deleteToken = async (token) => {
     })
   })
 };
-
-// const scheduleCleanup = () => {
-//   setInterval(async () => {
-//     const oneWeekAgo = new Date(Date.now() - ONE_WEEK_IN_MILLIS);
-//     await Token.destroy({ where: { lastUsedAt: { [Sequelize.Op.lt]: oneWeekAgo } } });
-//   }, 60 * 60 * 1000);
-// };
 
 const clearTokens = async (userId) => {
   await Token.destroy({ where: { userId: userId } });

@@ -22,7 +22,7 @@ exports.user = (req, res, next) => {
       .custom(async (email) => {
         const user = await UserService.findByEmail(email);
         if (user.length > 0) {
-          throw new Error("email in use");
+          return res.status(500)
         }
       }),
     check("password")
